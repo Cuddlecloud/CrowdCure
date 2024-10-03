@@ -105,12 +105,12 @@ SELECT
 FROM 
     PandemicSeverityIndex psi
 JOIN 
-    Disease d ON psi.DiseaseID = d.DiseaseID  -- Ensure we are referencing the correct disease
+    Disease d ON psi.DiseaseID = d.DiseaseID  
 LEFT JOIN 
     HealthAlert ha ON ha.DiseaseID = psi.DiseaseID AND ha.Region = psi.Region  -- Count alerts for the same disease and region
 WHERE 
-    d.Name = 'Specific Disease' AND  -- Placeholder: Replace 'Specific Disease' with the actual disease name
-    psi.Region = 'Specific Region'  -- Placeholder: Replace 'Specific Region' with the actual region
+    d.Name = 'Influenza' AND  -- Placeholder: Replace 'Specific Disease' with the actual disease name
+    psi.Region = 'CityA'  -- Placeholder: Replace 'Specific Region' with the actual region
 GROUP BY 
     psi.DateIssued, psi.Region
 ORDER BY 
