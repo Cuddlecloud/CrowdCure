@@ -69,7 +69,7 @@ GROUP BY
     ha.HealthAuthorityID;
 
 
--- 5. Show the average transmissibility rate for each disease over time, including the number of disease cases reported in the same region.
+-- 4. Show the average transmissibility rate for each disease over time, including the number of disease cases reported in the same region.
 SELECT d.Name AS DiseaseName, t.ReportDate, 
        AVG(t.TransmissionRate) AS AverageTransmissibility,  -- Aggregation: AVG()
        COUNT(dc.CaseID) AS NumberOfCases  -- Aggregation: COUNT()
@@ -82,7 +82,7 @@ GROUP BY d.Name, t.ReportDate  -- Grouping by Disease and Date
 ORDER BY d.Name, t.ReportDate;
 
 
--- 6. How many users there are for each role and the average number of symptom reports submitted by public users in each location.
+-- 5. How many users there are for each role and the average number of symptom reports submitted by public users in each location.
 SELECT u.Role, COUNT(u.UserID) AS NumberOfUsers,  
        AVG(sr.CountReports) AS AverageSymptomReports
 FROM User u
@@ -94,7 +94,7 @@ LEFT JOIN (
 GROUP BY u.Role;
 
 
--- 8. Show how the average severity factor for a specific disease has changed over time in a specific region, also showing the number of health alerts issued for that disease in that region.
+-- 6. Show how the average severity factor for a specific disease has changed over time in a specific region, also showing the number of health alerts issued for that disease in that region.
 
 SELECT 
     psi.DateIssued,
