@@ -7,7 +7,7 @@ CREATE TABLE User (
     Email VARCHAR(255) UNIQUE NOT NULL,
     Role ENUM('PublicUser', 'MedicalProfessional', 'HealthAuthority', 'LaboratoryWorker') NOT NULL,
     Location VARCHAR(255) NOT NULL,  -- Assuming every user has a location
-    DateJoined DATE NOT NULL DEFAULT CURRENT_DATE(),
+    DateJoined DATE NOT NULL DEFAULT CURDATE(),
     CHECK (CHAR_LENGTH(Name) >= 2),  -- Ensures that a name has at least 2 characters
     CHECK (Email LIKE '%_@__%.__%')  -- Ensures that email has a valid format
     
@@ -45,7 +45,7 @@ CREATE TABLE SymptomReport (
     UserID INT NOT NULL,
     FOREIGN KEY (UserID) REFERENCES PublicUser(UserID),
     CHECK (SeverityLevel BETWEEN 1 AND 10),  -- Severity level must be between 1 and 10
-    CHECK (ReportDate <= CURRENT_DATE())  -- Report date cannot be in the future
+    CHECK (ReportDate <= CURDATE())  -- Report date cannot be in the future
 );
 
 CREATE TABLE Disease (
@@ -68,7 +68,7 @@ CREATE TABLE DiseaseCase (
     FOREIGN KEY (DiseaseID) REFERENCES Disease(DiseaseID),
     FOREIGN KEY (MedicalProfessionalID) REFERENCES MedicalProfessional(MedicalProfessionalID),
     CHECK (CaseSeverity BETWEEN 1 AND 10),  -- Case severity must be between 1 and 10
-    CHECK (DateDiagnosed <= CURRENT_DATE()),  -- Diagnosis date cannot be in the future
+    CHECK (DateDiagnosed <= CURDATE()),  -- Diagnosis date cannot be in the future
     CHECK (MedicalProfessionalID > 0)  -- Ensures valid reference to MedicalProfessionalID
 );
 
@@ -88,7 +88,7 @@ CREATE TABLE LabTestReport (
     FOREIGN KEY (HospitalID) REFERENCES Hospital(HospitalID),
     FOREIGN KEY (HealthAuthorityID) REFERENCES HealthAuthority(HealthAuthorityID),
     CHECK (CHAR_LENGTH(Result) > 0),  -- Result cannot be empty
-    CHECK (DateTested <= CURRENT_DATE())  -- Test date cannot be in the future
+    CHECK (DateTested <= CURDATE())  -- Test date cannot be in the future
 );
 
 CREATE TABLE HealthAlert (
@@ -102,7 +102,7 @@ CREATE TABLE HealthAlert (
     FOREIGN KEY (DiseaseID) REFERENCES Disease(DiseaseID),
     FOREIGN KEY (HealthAuthorityID) REFERENCES HealthAuthority(HealthAuthorityID),
     CHECK (AlertSeverity BETWEEN 1 AND 10),  -- Alert severity must be between 1 and 10
-    CHECK (DateIssued <= CURRENT_DATE())  -- Alert date cannot be in the future
+    CHECK (DateIssued <= CURDATE())  -- Alert date cannot be in the future
 );
 
 CREATE TABLE Hospital (
@@ -141,7 +141,6 @@ CREATE TABLE PandemicSeverityIndex (
     FOREIGN KEY (HealthAuthorityID) REFERENCES HealthAuthority(HealthAuthorityID),
     FOREIGN KEY (DiseaseID) REFERENCES Disease(DiseaseID),
     CHECK (SeverityFactor BETWEEN 1 AND 10),  -- Severity factor must be between 1 and 10
-    CHECK (DateIssued <= CURRENT_DATE())  -- Issue date cannot be in the future
+    CHECK (DateIssued <= CURDATE())  -- Issue date cannot be in the future
 );
-
 
