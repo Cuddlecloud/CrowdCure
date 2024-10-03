@@ -116,3 +116,22 @@ GROUP BY
 ORDER BY 
     psi.DateIssued;
 
+-- 7. Group the occurence of the disease by the region
+
+SELECT d.DiseaseID, ha.Region, 
+    COUNT(d.DiseaseID) AS DiseaseCases
+FROM Disease d
+JOIN HealthAlert ha ON d.DiseaseID = ha.DiseaseID
+GROUP BY d.DiseaseID, ha.Region;
+
+-- 8. Information about the hospital where the Public Health ranking of the hospitals is maximum.
+SELECT *
+FROM Hospital
+WHERE PublicHealthRanking = (SELECT MAX(PublicHealthRanking) FROM Hospital);
+
+-- 9. All records of symptoms and personal information related of all users
+SELECT u.*, sr.*
+FROM User u
+JOIN SymptomReport sr ON u.UserID = sr.UserID;
+
+
