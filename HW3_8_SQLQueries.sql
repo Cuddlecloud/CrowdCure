@@ -1,24 +1,22 @@
 
 -- 1. Which disease has the highest number of reported cases in each region, and what is the total number of cases for that disease in that region?
 
-SELECT r.Region, d.DiseaseName, COUNT(dc.DiseaseCaseID) AS TotalCases  -- Aggregation: COUNT()
+SELECT psi.Region, d.Name AS DiseaseName, COUNT(dc.CaseID) AS TotalCases
 FROM DiseaseCase dc
-JOIN Disease d ON dc.DiseaseID = d.DiseaseID   -- Join 1
-JOIN PandemicSeverityIndex psi ON dc.DiseaseID = psi.DiseaseID  -- Join 2
-JOIN Region r ON psi.Region = r.RegionID  -- Join 3
-GROUP BY r.Region, d.DiseaseName  -- Group By
-HAVING COUNT(dc.DiseaseCaseID) = (  -- Having clause
+JOIN Disease d ON dc.DiseaseID = d.DiseaseID
+JOIN PandemicSeverityIndex psi ON dc.DiseaseID = psi.DiseaseID
+GROUP BY psi.Region, d.Name
+HAVING COUNT(dc.CaseID) = (
     SELECT MAX(CaseCount)
     FROM (
-        SELECT r.Region, d.DiseaseName, COUNT(dc.DiseaseCaseID) AS CaseCount
+        SELECT psi.Region, COUNT(dc.CaseID) AS CaseCount
         FROM DiseaseCase dc
-        JOIN Disease d ON dc.DiseaseID = d.DiseaseID
         JOIN PandemicSeverityIndex psi ON dc.DiseaseID = psi.DiseaseID
-        JOIN Region r ON psi.Region = r.RegionID
-        GROUP BY r.Region, d.DiseaseName
-    ) AS Counts
-    WHERE Counts.Region = r.Region
+        GROUP BY psi.Region
+    ) AS RegionCaseCounts
+    WHERE RegionCaseCounts.Region = psi.Region
 );
+
 
 -- 2. What is the average severity level of symptoms reported for each disease?
 
